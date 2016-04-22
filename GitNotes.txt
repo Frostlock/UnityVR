@@ -1,2 +1,8 @@
 Unity instructions:
 http://stackoverflow.com/questions/21573405/how-to-prepare-a-unity-project-for-git
+
+
+Collect local updates
+git add *
+git commit -m "message"
+git push origin master
