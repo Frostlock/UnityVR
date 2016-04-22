@@ -1,8 +1,15 @@
-Unity instructions:
+Instructions to set up github for Unity
+---------------------------------------
 http://stackoverflow.com/questions/21573405/how-to-prepare-a-unity-project-for-git
 
 
-Collect local updates
+Push local updates to Github
+----------------------------
 git add *
 git commit -m "message"
 git push origin master
+
+
+Pull changes from Github
+------------------------
+git pull origin master
