@@ -128,6 +128,10 @@ public class PieterRightController : MonoBehaviour {
         other.transform.parent = gameObject.transform;
         other.transform.localPosition = new Vector3(0, 0, 0);
         other.transform.localRotation = Quaternion.identity;
+        //Remove current forces from the object (preventing continued movement after pickup)
+        other.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        other.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        //Set proper alignment
         if (other.gameObject.CompareTag("MeleeWeapon"))
         {
             other.transform.localPosition = new Vector3(0, 0, 0);
