@@ -8,6 +8,7 @@ TagManager:
   - Hazard
   - Bolt
   - MeleeWeapon
+  - RangedWeapon
   layers:
   - Default
   - TransparentFX

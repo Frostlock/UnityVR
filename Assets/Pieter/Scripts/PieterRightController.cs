@@ -3,12 +3,6 @@ using System.Collections;
 
 public class PieterRightController : MonoBehaviour {
 
-    public GameObject shot;
-    public GameObject source;
-
-    public float fireRate = 0.5f;
-    private float nextFire = 0.0f;
-
     private Transform teleportReference;
 
     private GameObject touchedObject = null;
@@ -85,13 +79,11 @@ public class PieterRightController : MonoBehaviour {
 
     void TriggerClick(object sender, ClickedEventArgs e)
     {
-
-        nextFire = Time.time + fireRate;
-        //Spawn slightly lower than the camera to ensure the one sided quad representing the shot is visible
-        Vector3 shotSpawnPos = new Vector3(source.transform.position.x, source.transform.position.y, source.transform.position.z);
-        Quaternion shotSpawnRot = source.transform.rotation;
-        Instantiate(shot, shotSpawnPos, shotSpawnRot);
-
+        //Try to activate held object
+        if (heldObject != null)
+        {
+            heldObject.GetComponent<WeaponController>().TriggerClick();
+        }
     }
 
     void MenuClick(object sender, ClickedEventArgs e)
@@ -105,7 +97,7 @@ public class PieterRightController : MonoBehaviour {
         if (other == heldObject) return;
 
         //Trigger is meleeweapon
-        if (other.gameObject.CompareTag("MeleeWeapon"))
+        if (other.gameObject.CompareTag("MeleeWeapon") || other.gameObject.CompareTag("RangedWeapon"))
         {
             touchedObject = other.gameObject;
         }
@@ -117,7 +109,7 @@ public class PieterRightController : MonoBehaviour {
         if (other == heldObject) return;
 
         //Trigger is meleeweapon
-        if (other.gameObject.CompareTag("MeleeWeapon"))
+        if (other.gameObject.CompareTag("MeleeWeapon") || other.gameObject.CompareTag("RangedWeapon"))
         {
             touchedObject = null;
         }
@@ -131,11 +123,22 @@ public class PieterRightController : MonoBehaviour {
         heldObject.GetComponent<Rigidbody>().useGravity = false;
         //Deactivate collider for controller
         GetComponent<CapsuleCollider>().enabled = false;
-        //heldObject.GetComponent<CapsuleCollider>().isTrigger = true;
+        heldObject.GetComponent<CapsuleCollider>().isTrigger = true;
         //Align picked up object with controller
         other.transform.parent = gameObject.transform;
         other.transform.localPosition = new Vector3(0, 0, 0);
-        other.transform.localRotation = Quaternion.Euler(0f, 180f, 180f); //Quaternion.identity;
+        other.transform.localRotation = Quaternion.identity;
+        if (other.gameObject.CompareTag("MeleeWeapon"))
+        {
+            other.transform.localPosition = new Vector3(0, 0, 0);
+            other.transform.localRotation = Quaternion.Euler(0f, 180f, 180f);
+        }
+        if (other.gameObject.CompareTag("RangedWeapon"))
+        {
+            other.transform.localPosition = new Vector3(0, -0.13f, -0.025f);
+            other.transform.localRotation = Quaternion.Euler(0f, 90f, 70f);
+        }
+        
     }
 
     void DropObject()
@@ -145,7 +148,7 @@ public class PieterRightController : MonoBehaviour {
         //PROBLEM if the weapon is partly in the floor gravity will not be deactivated properly and it will fall through
         //Reinstate collider for controller
         GetComponent<CapsuleCollider>().enabled = true;
-        //heldObject.GetComponent<CapsuleCollider>().isTrigger = false;
+        heldObject.GetComponent<CapsuleCollider>().isTrigger = false;
 
         heldObject = null;
         

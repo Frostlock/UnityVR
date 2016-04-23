@@ -43,6 +43,7 @@ public class ImpactHandler : MonoBehaviour {
         }
     }
 
+    /*
     void OnTriggerStay(Collider other)
     {
         //Trigger is a MeleeWeapon
@@ -55,5 +56,6 @@ public class ImpactHandler : MonoBehaviour {
             }
         }
     }
+    */
 
 }
