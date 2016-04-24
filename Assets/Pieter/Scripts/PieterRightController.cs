@@ -123,7 +123,11 @@ public class PieterRightController : MonoBehaviour {
         heldObject.GetComponent<Rigidbody>().useGravity = false;
         //Deactivate collider for controller
         GetComponent<CapsuleCollider>().enabled = false;
-        heldObject.GetComponent<CapsuleCollider>().isTrigger = true;
+        //heldObject.GetComponent<CapsuleCollider>().isTrigger = true;
+        if (other.gameObject.CompareTag("RangedWeapon"))
+        {
+            heldObject.GetComponent<BoxCollider>().isTrigger = true;
+        }
         //Align picked up object with controller
         other.transform.parent = gameObject.transform;
         other.transform.localPosition = new Vector3(0, 0, 0);
@@ -152,8 +156,12 @@ public class PieterRightController : MonoBehaviour {
         //PROBLEM if the weapon is partly in the floor gravity will not be deactivated properly and it will fall through
         //Reinstate collider for controller
         GetComponent<CapsuleCollider>().enabled = true;
-        heldObject.GetComponent<CapsuleCollider>().isTrigger = false;
-
+        //heldObject.GetComponent<CapsuleCollider>().isTrigger = false;
+        //heldObject.GetComponent<CapsuleCollider>().isTrigger = true;
+        if (heldObject.CompareTag("RangedWeapon"))
+        {
+            heldObject.GetComponent<BoxCollider>().isTrigger = false;
+        }
         heldObject = null;
         
     }

@@ -3,17 +3,25 @@ using System.Collections;
 
 public class RoomController : MonoBehaviour{
 
-    public int roomWidth;
+    public int maxRoomWidth;
+    public int minRoomWidth;
+    private int roomWidth;
 
     // Use this for initialization
     void Start() {
-        SetRoomWidth();
+        SetRoomWidth(maxRoomWidth);
     }
 
-    void SetRoomWidth() { 
+    public int GetRoomWidth()
+    {
+        return roomWidth;
+    }
+
+    public void SetRoomWidth(int newRoomWidth) {
+        roomWidth = newRoomWidth;
         //Make sure roomWidth stays within bounds
-        if (roomWidth > 200) roomWidth = 200;
-        if (roomWidth < 10) roomWidth = 10;
+        if (roomWidth > maxRoomWidth) roomWidth = maxRoomWidth;
+        if (roomWidth < minRoomWidth) roomWidth = minRoomWidth;
         //Move walls out to create room of roomWidth
         int translation = roomWidth / 2;
         foreach (Transform t in transform) {
@@ -39,12 +47,14 @@ public class RoomController : MonoBehaviour{
         }
 	}
 
-    // Update is called once per frame
+    
+    /*
+     * Mouse scroll to control roomsize
+     *
     void Update () {
         //Debug.Log(Input.mouseScrollDelta);
-        roomWidth = roomWidth + 2 * (int) Input.mouseScrollDelta[1];
-        SetRoomWidth();
-
-
+        int newRoomWidth = newRoomWidth = roomWidth + 2 * (int) Input.mouseScrollDelta[1];
+        SetRoomWidth(newRoomWidth);
     }
+    */
 }

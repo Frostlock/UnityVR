@@ -9,7 +9,6 @@ public class WeaponController : MonoBehaviour {
     public float fireRate = 0.5f;
     private float nextFire = 0.0f;
 
-    public float o;
     // Use this for initialization
     void Start () {
 	

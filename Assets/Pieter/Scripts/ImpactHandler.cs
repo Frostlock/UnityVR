@@ -32,6 +32,9 @@ public class ImpactHandler : MonoBehaviour {
             if (gameObject.CompareTag("Boundary"))
             {
                 other.gameObject.GetComponent<Rigidbody>().useGravity = false;
+                //Remove current forces from the object (preventing continued movement after contact)
+                other.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                other.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
             }
 
             //In case of hazard object destroy the hazard
@@ -43,7 +46,6 @@ public class ImpactHandler : MonoBehaviour {
         }
     }
 
-    /*
     void OnTriggerStay(Collider other)
     {
         //Trigger is a MeleeWeapon
@@ -52,10 +54,12 @@ public class ImpactHandler : MonoBehaviour {
             //In case of boundary object meleeweapon should get stuck
             if (gameObject.CompareTag("Boundary"))
             {
-                other.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            other.gameObject.GetComponent<Rigidbody>().useGravity = false;
+            //Remove current forces from the object (preventing continued movement after contact)
+            other.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            other.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
             }
         }
     }
-    */
 
 }

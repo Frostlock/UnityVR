@@ -4,8 +4,11 @@ using System.Collections;
 public class GameController : MonoBehaviour
 {
 
+    public GameObject room;
     public GameObject hazard;
-    public Vector3 spawnValues;
+    //public Vector3 spawnValues;
+    private int spawnBoundary;
+
     public int hazardCount;
     public float startWait;
     public float spawnWait;
@@ -47,11 +50,31 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (true)
         {
+            //Start wave by shrinking room
+            RoomController rc = room.GetComponent<RoomController>();
+            rc.SetRoomWidth(rc.GetRoomWidth() - 3);
+
+            //Calculate spawn boundaries
+            int roomWidth = room.GetComponent<RoomController>().GetRoomWidth();
+            spawnBoundary = roomWidth / 2 - 3;
+
+            //Spawn hazards for the wave
             for (int i = 0; i < hazardCount; i++)
             {
                 spawnHazard();
+                //Pause before spawning next hazard
                 yield return new WaitForSeconds(spawnWait);
             }
+
+            //Wait for all hazards to be destroyed
+            int remainingHazards = GameObject.FindGameObjectsWithTag("Hazard").Length;
+            while (remainingHazards > 0)
+            {
+                yield return new WaitForSeconds(1);
+                remainingHazards = GameObject.FindGameObjectsWithTag("Hazard").Length;
+            }
+
+            //Pause before starting next wave
             yield return new WaitForSeconds(waveWait);
 
             if (gameOver)
@@ -65,15 +88,23 @@ public class GameController : MonoBehaviour
 
     void spawnHazard()
     {
-        Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x),
-                                            Random.Range(1, spawnValues.y),
-                                            Random.Range(-spawnValues.z, spawnValues.z));
-        Quaternion spawnRotation = Quaternion.identity;
-        float s = Random.Range(0.5f, 2.5f);
-        Vector3 spawnScale = new Vector3(s, s, s);
-                                            
+        //Spawn a new hazard
+        Vector3 spawnPosition = new Vector3(Random.Range(-spawnBoundary, spawnBoundary),
+                                            Random.Range(1, spawnBoundary),
+                                            Random.Range(-spawnBoundary, spawnBoundary));
+        Quaternion spawnRotation = Quaternion.identity;                                           
         GameObject newHazard = (GameObject) Instantiate(hazard, spawnPosition, spawnRotation);
-        newHazard.transform.localScale = spawnScale;
+
+        //Apply some force to make the hazard move
+        Rigidbody rb = newHazard.GetComponent<Rigidbody>();
+        int force = 1;
+        //Random direction
+        rb.AddForce(Random.onUnitSphere * force, ForceMode.Impulse);
+        //Toward the center of the scene
+        force = 30;
+        Vector3 normPos = newHazard.transform.position.normalized;
+        Vector3 toCenter = new Vector3(-normPos.x, -normPos.y, -normPos.z);
+        rb.AddForce(toCenter * force, ForceMode.Impulse);
     }
 
     public void addScore(int newScoreValue)
