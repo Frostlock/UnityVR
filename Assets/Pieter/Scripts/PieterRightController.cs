@@ -42,7 +42,7 @@ public class PieterRightController : MonoBehaviour {
             //Trigger a haptic pulse on the controller
             int controllerIndex;
             controllerIndex = (int)GetComponent<SteamVR_TrackedController>().controllerIndex;
-            SteamVR_Controller.Input(controllerIndex).TriggerHapticPulse(2000);
+            SteamVR_Controller.Input(controllerIndex).TriggerHapticPulse(500);
         }
     }
     
@@ -58,7 +58,7 @@ public class PieterRightController : MonoBehaviour {
 
         if (touchedObject != null)
         {
-            PickUpObject(touchedObject);
+            if (touchedObject.CompareTag("MeleeWeapon") || touchedObject.CompareTag("RangedWeapon")) PickUpObject(touchedObject);
             return;
         }
 
@@ -82,7 +82,14 @@ public class PieterRightController : MonoBehaviour {
         //Try to activate held object
         if (heldObject != null)
         {
-            heldObject.GetComponent<WeaponController>().TriggerClick();
+            WeaponController wc = heldObject.GetComponent<WeaponController>();
+            if (wc != null) wc.TriggerClick();
+        }
+        //Try to activate touched object
+        else if (touchedObject != null)
+        {
+            InteractionScript interScri = touchedObject.GetComponent<InteractionScript>();
+            interScri.Interact();
         }
     }
 
@@ -93,11 +100,13 @@ public class PieterRightController : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.gameObject.name);
+
         //Ignore held object
         if (other == heldObject) return;
 
         //Trigger is meleeweapon
-        if (other.gameObject.CompareTag("MeleeWeapon") || other.gameObject.CompareTag("RangedWeapon"))
+        if (other.gameObject.CompareTag("MeleeWeapon") || other.gameObject.CompareTag("RangedWeapon") || other.gameObject.CompareTag("Interaction"))
         {
             touchedObject = other.gameObject;
         }
@@ -109,7 +118,7 @@ public class PieterRightController : MonoBehaviour {
         if (other == heldObject) return;
 
         //Trigger is meleeweapon
-        if (other.gameObject.CompareTag("MeleeWeapon") || other.gameObject.CompareTag("RangedWeapon"))
+        if (other.gameObject.CompareTag("MeleeWeapon") || other.gameObject.CompareTag("RangedWeapon") || other.gameObject.CompareTag("Interaction"))
         {
             touchedObject = null;
         }
