@@ -7,7 +7,7 @@ public class WeaponController : MonoBehaviour {
     public GameObject source;
 
     public float fireRate = 0.5f;
-    private float nextFire = 0.0f;
+    //private float nextFire;
 
     // Use this for initialization
     void Start () {
@@ -21,7 +21,7 @@ public class WeaponController : MonoBehaviour {
 
     public void TriggerClick()
     {
-        nextFire = Time.time + fireRate;
+        //nextFire = Time.time + fireRate;
         float offSetY = 0.25f;
         //Spawn slightly lower than the camera to ensure the one sided quad representing the shot is visible
         Vector3 shotSpawnPos = new Vector3(source.transform.position.x + source.transform.localPosition.x,
