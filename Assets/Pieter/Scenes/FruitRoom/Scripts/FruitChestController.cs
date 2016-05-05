@@ -5,6 +5,7 @@ public class FruitChestController : InteractionScript
 {
 
     public bool active = false;
+    public GameObject glowEffect;
     public float spawnRadius = 0f;
     public float tumbleForce = 8f;
     public float upwardForce = 8f;
@@ -46,6 +47,7 @@ public class FruitChestController : InteractionScript
     {
         if (active) return;
         active = true;
+        glowEffect.SetActive(true);
         //Open chest animation
         chestAnimation.Play();
         chestAnimation["ChestAnim"].speed = 1;
@@ -58,6 +60,7 @@ public class FruitChestController : InteractionScript
     {
         if (!active) return;
         active = false;
+        glowEffect.SetActive(false);
         //Stop spawning co routine
         StopCoroutine(spawnCoRoutine);
         //Close chest
