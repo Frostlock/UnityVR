@@ -47,7 +47,7 @@ public class FruitChestController : InteractionScript
     {
         if (active) return;
         active = true;
-        glowEffect.SetActive(true);
+        glowEffect.GetComponent<ParticleSystem>().Play();
         //Open chest animation
         chestAnimation.Play();
         chestAnimation["ChestAnim"].speed = 1;
@@ -60,7 +60,7 @@ public class FruitChestController : InteractionScript
     {
         if (!active) return;
         active = false;
-        glowEffect.SetActive(false);
+        glowEffect.GetComponent<ParticleSystem>().Pause();
         //Stop spawning co routine
         StopCoroutine(spawnCoRoutine);
         //Close chest
