@@ -7,8 +7,9 @@ public class FruitChestController : InteractionScript
     public bool active = false;
     public GameObject glowEffect;
     public float spawnRadius = 0f;
-    public float tumbleForce = 8f;
-    public float upwardForce = 8f;
+    public int maxWaveSize = 3;
+
+
     public GameObject apple;
     public GameObject apricot;
     public GameObject strawberry;
@@ -18,6 +19,9 @@ public class FruitChestController : InteractionScript
 
     private IEnumerator spawnCoRoutine;
     private Animation chestAnimation;
+
+    private float tumbleForce = 8f;
+    private float upwardForce = 8f;
 
     void Start () {
         //look up available fruit options
@@ -75,13 +79,14 @@ public class FruitChestController : InteractionScript
         yield return new WaitForSeconds(3);
         while (true)
         {
-
-            spawnFruit();
-            yield return new WaitForSeconds(1);
-            spawnFruit();
-            yield return new WaitForSeconds(1);
-            spawnFruit();
-            yield return new WaitForSeconds(1);
+            int waveSize = Random.Range(1, maxWaveSize);
+            for (int i = 0; i < waveSize; i++)
+            {
+                spawnFruit();
+                float waitTime = Random.Range(0.2f, 1f);
+                yield return new WaitForSeconds(waitTime);
+            }
+                
 
             //Wait for fruit to be destroyed
             int remainingHazards = GameObject.FindGameObjectsWithTag("Fruit").Length;
