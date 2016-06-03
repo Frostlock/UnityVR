@@ -1,5 +1,9 @@
+Game to learn git
+https://github.com/Gazler/githug
+
+
 Instructions to set up github for Unity
----------------------------------------
+#######################################
 http://stackoverflow.com/questions/21573405/how-to-prepare-a-unity-project-for-git
 
 
@@ -14,3 +18,35 @@ git push origin master
 Pull changes from Github
 ------------------------
 git pull origin master
+
+
+
+Working with a fork of someone else
+###################################
+Use github website to create a fork
+Clone the forked repository locally
+-----------------------------------
+git clone https://github.com/Frostlock/SteamVR_Unity_Toolkit.git
+
+
+Add upstream difinition
+-----------------------
+git remote add upstream https://github.com/thestonefox/SteamVR_Unity_Toolkit.git
+
+
+Reset a fork to origin
+-----------------------
+git fetch upstream
+git checkout master
+git reset --hard upstream/master  
+git push origin master --force 
+http://stackoverflow.com/questions/9646167/clean-up-a-fork-and-restart-it-from-the-upstream
+
+
+Update a fork with the latest stuff from the origin of the fork
+---------------------------------------------------------------
+https://help.github.com/articles/syncing-a-fork/
+use rebase instead?
+
+
+Get a commit from one branch into another -> cherrypick
